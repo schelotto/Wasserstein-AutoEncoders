@@ -7,6 +7,7 @@ For simplicity, I just use MNIST data with MLP architecture instead of DC-GAN fo
 * python 3
 * PyTorch >= 0.3
 * torchvision
+* numpy
 
 ## Train
 * To train an adversarial autoencoder:

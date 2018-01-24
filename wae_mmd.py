@@ -1,7 +1,7 @@
 import argparse
 import numpy as np
 from itertools import combinations, product
-
+import os
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -33,12 +33,12 @@ SIGMA = 5
 trainset = MNIST(root='./data/',
                  train=True,
                  transform=transforms.ToTensor(),
-                 download=False)
+                 download=True)
 
 testset = MNIST(root='./data/',
                  train=False,
                  transform=transforms.ToTensor(),
-                 download=False)
+                 download=True)
 
 train_loader = DataLoader(dataset=trainset,
                           batch_size=args.batch_size,
@@ -142,4 +142,6 @@ for epoch in range(args.epochs):
             recons_image.append(x)
 
     recons_image = torch.cat(recons_image, dim=0)
-    save_image(recons_image.data, './data/reconst_images/wae_mmd_images_%d.png' % (epoch+1), nrow=nx)
+    if not os.path.isdir('./data/reconst_images'):
+        os.makedirs('data/reconst_images')
+    save_image(recons_image.data, './data/reconst_images/wae_gan_images_%d.png' % (epoch+1), nrow=nx)

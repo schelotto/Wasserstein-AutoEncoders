@@ -1,4 +1,3 @@
-# Wasserstein Autoencoders
 ## Introduction
 This is the implementation of [Wasserstein Auto-Encoders](https://arxiv.org/abs/1711.01558) paper in PyTorch.
 

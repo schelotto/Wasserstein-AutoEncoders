@@ -1,6 +1,6 @@
 import argparse
 import numpy as np
-
+import os
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -153,5 +153,6 @@ for epoch in range(args.epochs):
             x = P(Variable(torch.from_numpy(np.asarray([z1_, z2_]))).view(-1, z_dim)).view(1, 1, 28, 28)
             recons_image.append(x)
 
-    recons_image = torch.cat(recons_image, dim=0)
+    if not os.path.isdir('./data/reconst_images'):
+        os.makedirs('data/reconst_images')
     save_image(recons_image.data, './data/reconst_images/aae_images_%d.png' % (epoch+1), nrow=nx)

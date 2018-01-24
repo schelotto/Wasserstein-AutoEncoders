@@ -144,4 +144,4 @@ for epoch in range(args.epochs):
     recons_image = torch.cat(recons_image, dim=0)
     if not os.path.isdir('./data/reconst_images'):
         os.makedirs('data/reconst_images')
-    save_image(recons_image.data, './data/reconst_images/wae_gan_images_%d.png' % (epoch+1), nrow=nx)
+    save_image(recons_image.data, './data/reconst_images/wae_mmd_images_%d.png' % (epoch+1), nrow=nx)

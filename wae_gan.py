@@ -20,7 +20,7 @@ parser.add_argument('-epochs', type=int, default=100, help='number of epochs to 
 parser.add_argument('-lr', type=float, default=0.0001, help='learning rate (default: 0.0001)')
 parser.add_argument('-dim_h', type=int, default=128, help='hidden dimension (default: 128)')
 parser.add_argument('-n_z', type=int, default=8, help='hidden dimension of z (default: 8)')
-parser.add_argument('-LAMBDA', type=float, default=1, help='regularization coef GAN term (default: 1)')
+parser.add_argument('-LAMBDA', type=float, default=10, help='regularization coef MMD term (default: 10)')
 parser.add_argument('-n_channel', type=int, default=1, help='input channels (default: 1)')
 parser.add_argument('-sigma', type=float, default=1, help='variance of hidden dimension (default: 1)')
 args = parser.parse_args()

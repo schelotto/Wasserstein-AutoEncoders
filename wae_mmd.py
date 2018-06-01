@@ -208,7 +208,7 @@ for epoch in range(args.epochs):
 
         step += 1
 
-        if (step + 1) % 100 == 0:
+        if (step + 1) % 300 == 0:
             print("Epoch: [%d/%d], Step: [%d/%d], Reconstruction Loss: %.4f" %
                   (epoch + 1, args.epochs, step + 1, len(train_loader), recon_loss.data.item()))
 

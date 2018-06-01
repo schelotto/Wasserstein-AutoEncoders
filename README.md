@@ -11,7 +11,6 @@ I rewrite the model in DC-GAN for the encoder/decoder/discriminator instead of s
 * tqdm
 
 ## Train
-```
 * To train a WAE-GAN:
 ```
 python wae_gan.py

@@ -221,7 +221,7 @@ for epoch in range(args.epochs):
             print("Epoch: [%d/%d], Step: [%d/%d], Reconstruction Loss: %.4f" %
                   (epoch + 1, args.epochs, step + 1, len(train_loader), recon_loss.data.item()))
 
-    if (epoch + 1) % 10 == 0:
+    if (epoch + 1) % 1 == 0:
         batch_size = 104
         test_iter = iter(test_loader)
         test_data = next(test_iter)

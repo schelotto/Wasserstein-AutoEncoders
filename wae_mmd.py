@@ -41,7 +41,7 @@ train_loader = DataLoader(dataset=trainset,
                           shuffle=True)
 
 test_loader = DataLoader(dataset=testset,
-                         batch_size=100,
+                         batch_size=104,
                          shuffle=False)
 
 def free_params(module: nn.Module):
@@ -176,7 +176,6 @@ for epoch in range(args.epochs):
 
         # ======== Train Generator ======== #
 
-        images = Variable(images)
         batch_size = images.size()[0]
 
         z = encoder(images)
@@ -205,7 +204,7 @@ for epoch in range(args.epochs):
             print("Epoch: [%d/%d], Step: [%d/%d], Reconstruction Loss: %.4f" %
                   (epoch + 1, args.epochs, step + 1, len(train_loader), recon_loss.data.item()))
 
-    if (epoch + 1) % 10 == 0:
+    if (epoch + 1) % 1 == 0:
         batch_size = 104
         test_iter = iter(test_loader)
         test_data = next(test_iter)

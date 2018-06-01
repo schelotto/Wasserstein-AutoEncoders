@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="187a80af-ec88-41d4-8b3d-c2c41f46d330" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/wae_gan.py" beforeDir="false" afterPath="$PROJECT_DIR$/wae_gan.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wae_mmd.py" beforeDir="false" afterPath="$PROJECT_DIR$/wae_mmd.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -13,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="wae_gan.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="wae_gan.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/wae_gan.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="23" selection-start-line="23" selection-end-line="23" />
+            <state relative-caret-position="414">
+              <caret line="223" column="22" selection-start-line="223" selection-start-column="22" selection-end-line="223" selection-end-column="22" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -25,23 +26,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="300">
-                <caret line="20" column="3" selection-start-line="20" selection-start-column="3" selection-end-line="20" selection-end-column="3" />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="wae_mmd.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="wae_mmd.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/wae_mmd.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="334">
-              <caret line="23" column="26" selection-start-line="23" selection-end-line="24" />
+            <state relative-caret-position="370">
+              <caret line="206" column="22" selection-start-line="206" selection-start-column="22" selection-end-line="206" selection-end-column="22" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -66,8 +55,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/wae_mmd.py" />
         <option value="$PROJECT_DIR$/wae_gan.py" />
+        <option value="$PROJECT_DIR$/wae_mmd.py" />
       </list>
     </option>
   </component>
@@ -399,20 +388,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wae_mmd.py">
+    <entry file="file://$PROJECT_DIR$/wae_gan.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="334">
-          <caret line="23" column="26" selection-start-line="23" selection-end-line="24" />
+        <state relative-caret-position="414">
+          <caret line="223" column="22" selection-start-line="223" selection-start-column="22" selection-end-line="223" selection-end-column="22" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wae_gan.py">
+    <entry file="file://$PROJECT_DIR$/wae_mmd.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
+        <state relative-caret-position="370">
+          <caret line="206" column="22" selection-start-line="206" selection-start-column="22" selection-end-line="206" selection-end-column="22" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>

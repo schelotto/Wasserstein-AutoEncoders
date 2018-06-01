@@ -1,18 +1,16 @@
 ## Introduction
 This is the implementation of [Wasserstein Auto-Encoders](https://arxiv.org/abs/1711.01558) paper in PyTorch.
 
-For simplicity, I just use MNIST data with MLP architecture instead of DC-GAN for the encoder/decoder/discriminator, but you can replace them easily.
+I rewrite the model in DC-GAN for the encoder/decoder/discriminator instead of simple MLP
 
 ## Requirement
 * python 3
-* PyTorch >= 0.3
+* PyTorch >= 0.4
 * torchvision
 * numpy
+* tqdm
 
 ## Train
-* To train an adversarial autoencoder:
-```
-python aae.py
 ```
 * To train a WAE-GAN:
 ```

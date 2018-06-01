@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="187a80af-ec88-41d4-8b3d-c2c41f46d330" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aae.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/wae_gan.py" beforeDir="false" afterPath="$PROJECT_DIR$/wae_gan.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wae_mmd.py" beforeDir="false" afterPath="$PROJECT_DIR$/wae_mmd.py" afterDir="false" />
     </list>
@@ -17,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="wae_gan.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="wae_gan.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/wae_gan.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="411">
-              <caret line="234" column="93" selection-start-line="234" selection-start-column="93" selection-end-line="234" selection-end-column="93" />
+            <state relative-caret-position="242">
+              <caret line="42" column="39" selection-start-line="42" selection-start-column="39" selection-end-line="42" selection-end-column="39" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -41,11 +38,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="wae_mmd.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="wae_mmd.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/wae_mmd.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="470">
-              <caret line="219" column="15" selection-end-line="226" selection-end-column="93" />
+            <state relative-caret-position="328">
+              <caret line="43" column="39" selection-start-line="43" selection-start-column="39" selection-end-line="43" selection-end-column="39" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -69,9 +66,9 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/wae_mmd.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/wae_gan.py" />
+        <option value="$PROJECT_DIR$/wae_mmd.py" />
       </list>
     </option>
   </component>
@@ -388,16 +385,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wae_mmd.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="470">
-          <caret line="219" column="15" selection-end-line="226" selection-end-column="93" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -415,8 +402,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/wae_gan.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="411">
-          <caret line="234" column="93" selection-start-line="234" selection-start-column="93" selection-end-line="234" selection-end-column="93" />
+        <state relative-caret-position="242">
+          <caret line="42" column="39" selection-start-line="42" selection-start-column="39" selection-end-line="42" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wae_mmd.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="328">
+          <caret line="43" column="39" selection-start-line="43" selection-start-column="39" selection-end-line="43" selection-end-column="39" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>

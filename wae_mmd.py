@@ -41,7 +41,7 @@ train_loader = DataLoader(dataset=trainset,
                           shuffle=True)
 
 test_loader = DataLoader(dataset=testset,
-                         batch_size=args.batch_size,
+                         batch_size=104,
                          shuffle=False)
 
 def free_params(module: nn.Module):

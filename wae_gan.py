@@ -61,16 +61,16 @@ class Encoder(nn.Module):
 
         self.main = nn.Sequential(
             nn.Conv2d(self.n_channel, self.dim_h, 4, 2, 1, bias=False),
-            nn.LeakyReLU(0.2, inplace=True),
+            nn.ReLU(True),
             nn.Conv2d(self.dim_h, self.dim_h * 2, 4, 2, 1, bias=False),
             nn.BatchNorm2d(self.dim_h * 2),
-            nn.LeakyReLU(0.2, inplace=True),
+            nn.ReLU(True),
             nn.Conv2d(self.dim_h * 2, self.dim_h * 4, 4, 2, 1, bias=False),
             nn.BatchNorm2d(self.dim_h * 4),
-            nn.LeakyReLU(0.2, inplace=True),
+            nn.ReLU(True),
             nn.Conv2d(self.dim_h * 4, self.dim_h * 8, 4, 2, 1, bias=False),
             nn.BatchNorm2d(self.dim_h * 8),
-            nn.LeakyReLU(0.2, inplace=True)
+            nn.ReLU(True),
         )
         self.fc = nn.Linear(self.dim_h * (2 ** 3), self.n_z)
 
@@ -92,29 +92,22 @@ class Decoder(nn.Module):
             nn.Linear(self.n_z, self.dim_h * 8 * 7 * 7),
             nn.ReLU()
         )
+
         self.main = nn.Sequential(
-            nn.ConvTranspose2d(self.dim_h * 8, self.dim_h * 4, 4, 2, 1, bias=False),
+            nn.ConvTranspose2d(self.dim_h * 8, self.dim_h * 4, 4),
             nn.BatchNorm2d(self.dim_h * 4),
             nn.ReLU(True),
-            nn.ConvTranspose2d(self.dim_h * 4, self.dim_h * 2, 4, 2, 1, bias=False),
+            nn.ConvTranspose2d(self.dim_h * 4, self.dim_h * 2, 4),
             nn.BatchNorm2d(self.dim_h * 2),
             nn.ReLU(True),
-            nn.ConvTranspose2d(self.dim_h * 2, self.dim_h, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(self.dim_h),
-            nn.ReLU(True),
-            nn.ConvTranspose2d(self.dim_h, self.n_channel, 4, 2, 1, bias=False),
-            nn.ReLU(True),
-        )
-        self.fc = nn.Sequential(
-            nn.Linear(112 ** 2, 28 ** 2),
+            nn.ConvTranspose2d(self.dim_h * 2, 1, 4, stride=2),
             nn.Sigmoid()
         )
 
     def forward(self, x):
         x = self.proj(x)
         x = x.view(-1, self.dim_h * 8, 7, 7)
-        x = self.main(x).view(-1, 112 ** 2)
-        x = self.fc(x).view(-1, 1, 28, 28)
+        x = self.main(x)
         return x
 
 class Discriminator(nn.Module):
@@ -126,24 +119,19 @@ class Discriminator(nn.Module):
         self.n_z = args.n_z
 
         self.main = nn.Sequential(
-            nn.ConvTranspose2d(self.n_z, self.dim_h * 8, 4, 1, 0, bias=False),
-            nn.BatchNorm2d(self.dim_h * 8),
-            nn.LeakyReLU(0.2, True),
-            nn.ConvTranspose2d(self.dim_h * 8, self.dim_h * 4, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(self.dim_h * 4),
-            nn.LeakyReLU(0.2, True),
-            nn.ConvTranspose2d(self.dim_h * 4, self.dim_h * 2, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(self.dim_h * 2),
-            nn.LeakyReLU(0.2, True),
-            nn.ConvTranspose2d(self.dim_h * 2, self.dim_h, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(self.dim_h),
-            nn.LeakyReLU(0.2, True),
-            nn.ConvTranspose2d(self.dim_h, 1, 4, 2, 1, bias=False),
+            nn.Linear(self.n_z, self.dim_h * 4),
+            nn.ReLU(True),
+            nn.Linear(self.dim_h * 4, self.dim_h * 4),
+            nn.ReLU(True),
+            nn.Linear(self.dim_h * 4, self.dim_h * 4),
+            nn.ReLU(True),
+            nn.Linear(self.dim_h * 4, self.dim_h * 4),
+            nn.ReLU(True),
+            nn.Linear(self.dim_h * 4, 1),
             nn.Sigmoid()
         )
 
     def forward(self, x):
-        x = x.view(-1, self.n_z, 1, 1)
         x = self.main(x)
         return x
 
@@ -195,6 +183,7 @@ for epoch in range(args.epochs):
 
         if torch.cuda.is_available():
             z_fake = z_fake.cuda()
+
         d_fake = discriminator(z_fake)
 
         z_real = encoder(images)

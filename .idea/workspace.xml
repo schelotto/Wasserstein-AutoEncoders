@@ -17,8 +17,8 @@
       <file leaf-file-name="wae_gan.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/wae_gan.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="346">
-              <caret line="20" column="36" selection-start-line="20" selection-end-line="21" />
+            <state relative-caret-position="94">
+              <caret line="53" selection-start-line="53" selection-end-line="110" selection-end-column="16" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -41,8 +41,8 @@
       <file leaf-file-name="wae_mmd.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/wae_mmd.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="431">
-              <caret line="22" selection-start-line="22" selection-end-line="22" />
+            <state relative-caret-position="531">
+              <caret line="111" column="16" selection-start-line="111" selection-start-column="16" selection-end-line="111" selection-end-column="16" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -120,7 +120,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.wae_gan">
+  <component name="RunManager" selected="Python.wae_mmd">
     <configuration name="module" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Wasserstein_Autoencoders" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -182,8 +182,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.wae_gan" />
         <item itemvalue="Python.wae_mmd" />
+        <item itemvalue="Python.wae_gan" />
         <item itemvalue="Python.module" />
       </list>
     </recent_temporary>
@@ -208,7 +208,7 @@
       <window_info content_ui="combo" id="Project" order="0" weight="0.24930556" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3237858" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.49190536" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -402,8 +402,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/wae_gan.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="346">
-          <caret line="20" column="36" selection-start-line="20" selection-end-line="21" />
+        <state relative-caret-position="94">
+          <caret line="53" selection-start-line="53" selection-end-line="110" selection-end-column="16" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
@@ -412,8 +412,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/wae_mmd.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="431">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
+        <state relative-caret-position="531">
+          <caret line="111" column="16" selection-start-line="111" selection-start-column="16" selection-end-line="111" selection-end-column="16" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>

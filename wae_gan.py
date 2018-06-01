@@ -60,26 +60,25 @@ class Encoder(nn.Module):
         self.n_z = args.n_z
 
         self.main = nn.Sequential(
-            nn.Conv2d(1, self.dim_h, 5, stride=2, padding=2),
-            nn.BatchNorm2d(self.dim_h),
-            nn.LeakyReLU(0.2, True),
-            nn.Conv2d(self.dim_h, 2 * self.dim_h, 5, stride=2, padding=2),
-            nn.BatchNorm2d(2 * self.dim_h),
-            nn.LeakyReLU(0.2, True),
-            nn.Conv2d(2 * self.dim_h, 4 * self.dim_h, 5, stride=2, padding=2),
-            nn.BatchNorm2d(4 * self.dim_h),
-            nn.LeakyReLU(0.2, True)
+            nn.Conv2d(self.n_channel, self.dim_h, 4, 2, 1, bias=False),
+            nn.LeakyReLU(0.2, inplace=True),
+            nn.Conv2d(self.dim_h, self.dim_h * 2, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(self.dim_h * 2),
+            nn.LeakyReLU(0.2, inplace=True),
+            nn.Conv2d(self.dim_h * 2, self.dim_h * 4, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(self.dim_h * 4),
+            nn.LeakyReLU(0.2, inplace=True),
+            nn.Conv2d(self.dim_h * 4, self.dim_h * 8, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(self.dim_h * 8),
+            nn.LeakyReLU(0.2, inplace=True)
         )
-        self.fc = nn.Linear(self.dim_h * 4 ** 3, self.n_z)
+        self.fc = nn.Linear(self.dim_h * (2 ** 3), self.n_z)
 
     def forward(self, x):
-
-        input = x.view(-1, 1, 28, 28)
-        x = self.main(input)
-        x = x.view(-1, self.dim_h * 4 ** 3)
-        output = self.fc(x)
-
-        return output
+        x = self.main(x)
+        x = x.squeeze()
+        x = self.fc(x)
+        return x
 
 class Decoder(nn.Module):
     def __init__(self, args):
@@ -89,35 +88,34 @@ class Decoder(nn.Module):
         self.dim_h = args.dim_h
         self.n_z = args.n_z
 
-        self.flatten = nn.Sequential(
-            nn.Linear(self.n_z, self.dim_h * 4 ** 3),
-            nn.LeakyReLU(0.2, True),
+        self.proj = nn.Sequential(
+            nn.Linear(self.n_z, self.dim_h * 8 * 7 * 7),
+            nn.ReLU()
         )
-        self.block1 = nn.Sequential(
-            nn.ConvTranspose2d(4 * self.dim_h, 2 * self.dim_h, 5),
-            nn.BatchNorm2d(2 * self.dim_h),
-            nn.LeakyReLU(0.2, True),
-        )
-        self.block2 = nn.Sequential(
-            nn.ConvTranspose2d(2 * self.dim_h, self.dim_h, 5),
+        self.main = nn.Sequential(
+            nn.ConvTranspose2d(self.dim_h * 8, self.dim_h * 4, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(self.dim_h * 4),
+            nn.ReLU(True),
+            nn.ConvTranspose2d(self.dim_h * 4, self.dim_h * 2, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(self.dim_h * 2),
+            nn.ReLU(True),
+            nn.ConvTranspose2d(self.dim_h * 2, self.dim_h, 4, 2, 1, bias=False),
             nn.BatchNorm2d(self.dim_h),
-            nn.LeakyReLU(0.2, True),
+            nn.ReLU(True),
+            nn.ConvTranspose2d(self.dim_h, self.n_channel, 4, 2, 1, bias=False),
+            nn.ReLU(True),
         )
-        self.deconv_out = nn.Sequential(
-            nn.ConvTranspose2d(self.dim_h, 1, 8, stride=2),
+        self.fc = nn.Sequential(
+            nn.Linear(112 ** 2, 28 ** 2),
             nn.Sigmoid()
         )
 
-    def forward(self,
-                input: torch.Tensor):
-        output = self.flatten(input)
-        output = output.view(-1, 4 * self.dim_h, 4, 4)
-        output = self.block1(output)
-        output = output[:, :, :7, :7]
-        output = self.block2(output)
-        output = self.deconv_out(output)
-
-        return output.view(-1, 28 ** 2)
+    def forward(self, x):
+        x = self.proj(x)
+        x = x.view(-1, self.dim_h * 8, 7, 7)
+        x = self.main(x).view(-1, 112 ** 2)
+        x = self.fc(x).view(-1, 1, 28, 28)
+        return x
 
 class Discriminator(nn.Module):
     def __init__(self, args):
@@ -183,7 +181,6 @@ for epoch in range(args.epochs):
         if torch.cuda.is_available():
             images = images.cuda()
 
-        images = images.view(-1, 28 ** 2)
         encoder.zero_grad()
         decoder.zero_grad()
         discriminator.zero_grad()
@@ -194,12 +191,13 @@ for epoch in range(args.epochs):
         frozen_params(encoder)
         free_params(discriminator)
 
-        z_fake = Variable(torch.randn(images.size()[0], args.n_z) * args.sigma)
+        z_fake = torch.randn(images.size()[0], args.n_z) * args.sigma
+
         if torch.cuda.is_available():
             z_fake = z_fake.cuda()
         d_fake = discriminator(z_fake)
 
-        z_real = encoder(Variable(images.data))
+        z_real = encoder(images)
         d_real = discriminator(z_real)
 
         torch.log(d_fake).mean().backward(mone)
@@ -234,13 +232,13 @@ for epoch in range(args.epochs):
             print("Epoch: [%d/%d], Step: [%d/%d], Reconstruction Loss: %.4f" %
                   (epoch + 1, args.epochs, step + 1, len(train_loader), recon_loss.data.item()))
 
-    if (epoch + 1) % 1 == 0:
+    if (epoch + 1) % 10 == 0:
         batch_size = 104
         test_iter = iter(test_loader)
         test_data = next(test_iter)
 
-        z_real_ = encoder(Variable(test_data[0]).cuda())
-        reconst = decoder(z_real_).cpu().view(batch_size, 1, 28, 28)
+        z_real = encoder(Variable(test_data[0]).cuda())
+        reconst = decoder(torch.randn_like(z_real)).cpu().view(batch_size, 1, 28, 28)
 
         if not os.path.isdir('./data/reconst_images'):
             os.makedirs('data/reconst_images')

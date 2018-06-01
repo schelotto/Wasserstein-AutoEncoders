@@ -41,7 +41,7 @@ train_loader = DataLoader(dataset=trainset,
                           shuffle=True)
 
 test_loader = DataLoader(dataset=testset,
-                         batch_size=104,
+                         batch_size=100,
                          shuffle=False)
 
 def free_params(module: nn.Module):
@@ -71,9 +71,9 @@ class Encoder(nn.Module):
             nn.LeakyReLU(0.2, inplace=True),
             nn.Conv2d(self.dim_h * 4, self.dim_h * 8, 4, 2, 1, bias=False),
             nn.BatchNorm2d(self.dim_h * 8),
-            nn.LeakyReLU(0.2, inplace=True),
+            nn.LeakyReLU(0.2, inplace=True)
         )
-        self.fc = nn.Linear(1024, self.n_z)
+        self.fc = nn.Linear(self.dim_h * (2 ** 3), self.n_z)
 
     def forward(self, x):
         x = self.main(x)
@@ -96,15 +96,15 @@ class Decoder(nn.Module):
         self.main = nn.Sequential(
             nn.ConvTranspose2d(self.dim_h * 8, self.dim_h * 4, 4, 2, 1, bias=False),
             nn.BatchNorm2d(self.dim_h * 4),
-            nn.ReLU(True),
+            nn.LeakyReLU(0.2, inplace=True),
             nn.ConvTranspose2d(self.dim_h * 4, self.dim_h * 2, 4, 2, 1, bias=False),
             nn.BatchNorm2d(self.dim_h * 2),
-            nn.ReLU(True),
+            nn.LeakyReLU(0.2, inplace=True),
             nn.ConvTranspose2d(self.dim_h * 2, self.dim_h, 4, 2, 1, bias=False),
             nn.BatchNorm2d(self.dim_h),
-            nn.ReLU(True),
+            nn.LeakyReLU(0.2, inplace=True),
             nn.ConvTranspose2d(self.dim_h, self.n_channel, 4, 2, 1, bias=False),
-            nn.ReLU(True),
+            nn.LeakyReLU(0.2, inplace=True)
         )
         self.fc = nn.Sequential(
             nn.Linear(112 ** 2, 28 ** 2),
@@ -198,7 +198,7 @@ for epoch in range(args.epochs):
         if torch.cuda.is_available():
             z_fake = z_fake.cuda()
 
-        z_real = encoder(Variable(images.data))
+        z_real = encoder(images)
 
         mmd_real, mmd_cross, mmd_fake = lorentz_kernel(z_real, z_fake)
         (mmd_fake + mmd_real + mmd_cross).mean().backward(one)
@@ -212,13 +212,13 @@ for epoch in range(args.epochs):
             print("Epoch: [%d/%d], Step: [%d/%d], Reconstruction Loss: %.4f" %
                   (epoch + 1, args.epochs, step + 1, len(train_loader), recon_loss.data.item()))
 
-    if (epoch + 1) % 1 == 0:
+    if (epoch + 1) % 10 == 0:
         batch_size = 104
         test_iter = iter(test_loader)
         test_data = next(test_iter)
 
         z_real = encoder(Variable(test_data[0]).cuda())
-        reconst = decoder(torch.randn_like(z_real)).cpu().view(-1, 1, 28, 28)
+        reconst = decoder(torch.randn_like(z_real)).cpu().view(batch_size, 1, 28, 28)
 
         if not os.path.isdir('./data/reconst_images'):
             os.makedirs('data/reconst_images')

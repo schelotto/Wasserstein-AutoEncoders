@@ -19,3 +19,10 @@ python wae_gan.py
 ```
 python wae_mmd.py
 ```
+
+## Randomly Generated Images (100 Epochs)
+* WAE-MMD
+![WAE_MMD](./recon_images/wae_mmd.png)
+
+* WAE-GAN
+![WAE_GAN](./recon_images/wae_gan.png)

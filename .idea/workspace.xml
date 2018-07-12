@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="187a80af-ec88-41d4-8b3d-c2c41f46d330" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Wasserstein_Autoencoders.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Wasserstein_Autoencoders.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wae_mmd.py" beforeDir="false" afterPath="$PROJECT_DIR$/wae_mmd.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -16,8 +19,8 @@
       <file leaf-file-name="wae_gan.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/wae_gan.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="170" selection-start-line="170" selection-end-line="170" />
+            <state relative-caret-position="3345">
+              <caret line="235" column="93" selection-start-line="235" selection-start-column="93" selection-end-line="235" selection-end-column="93" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -25,26 +28,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="420">
-                <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
+              <first_editor relative-caret-position="435">
+                <caret line="29" column="38" selection-start-line="29" selection-start-column="38" selection-end-line="29" selection-end-column="38" />
               </first_editor>
               <second_editor />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="wae_mmd.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="wae_mmd.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/wae_mmd.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2895">
-              <caret line="206" column="22" selection-end-line="218" selection-end-column="93" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="631">
+              <caret line="237" column="16" selection-start-line="237" selection-start-column="16" selection-end-line="237" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -66,12 +66,12 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/wae_gan.py" />
-        <option value="$PROJECT_DIR$/wae_mmd.py" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/wae_mmd.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
     <option name="x" value="14" />
     <option name="y" value="23" />
     <option name="width" value="1366" />
@@ -85,6 +85,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -92,16 +93,10 @@
               <item name="Wasserstein_Autoencoders" type="b2602c69:ProjectViewProjectNode" />
               <item name="Wasserstein_Autoencoders" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="Wasserstein_Autoencoders" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Wasserstein_Autoencoders" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -202,10 +197,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="14" y="23" width="1366" height="605" extended-state="0" />
+    <frame x="0" y="0" width="1680" height="1050" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26281112" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26280892" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.35865504" />
@@ -235,6 +230,33 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/wae_gan.py">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2250">
+          <caret line="162" selection-start-line="162" selection-end-line="162" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wae_mmd.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2025">
+          <caret line="147" lean-forward="true" selection-end-line="147" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="360">
+            <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wae_gan.py">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2955">
           <caret line="209" column="27" selection-end-line="235" selection-end-column="93" />
           <folding>
@@ -247,9 +269,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2895">
           <caret line="206" column="22" selection-end-line="218" selection-end-column="93" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -267,9 +286,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="19" selection-end-line="223" selection-end-column="93" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -384,41 +400,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/aae.py" />
-    <entry file="file://$USER_HOME$/miniconda3/lib/python3.6/site-packages/torch/nn/modules/module.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="535" column="25" selection-start-line="535" selection-start-column="25" selection-end-line="535" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/miniconda3/lib/python3.6/site-packages/torch/nn/functional.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="1560" column="4" selection-start-line="1560" selection-start-column="4" selection-end-line="1560" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/miniconda3/lib/python3.6/site-packages/torch/nn/modules/conv.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="674" column="8" selection-start-line="674" selection-start-column="8" selection-end-line="674" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wae_mmd.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2895">
-          <caret line="206" column="22" selection-end-line="218" selection-end-column="93" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/miniconda3/lib/python3.6/site-packages/torch/nn/modules/module.py" />
+    <entry file="file://$USER_HOME$/miniconda3/lib/python3.6/site-packages/torch/nn/functional.py" />
+    <entry file="file://$USER_HOME$/miniconda3/lib/python3.6/site-packages/torch/nn/modules/conv.py" />
     <entry file="file://$PROJECT_DIR$/wae_gan.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="170" selection-start-line="170" selection-end-line="170" />
+        <state relative-caret-position="3345">
+          <caret line="235" column="93" selection-start-line="235" selection-start-column="93" selection-end-line="235" selection-end-column="93" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
@@ -426,17 +414,24 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="435">
+            <caret line="29" column="38" selection-start-line="29" selection-start-column="38" selection-end-line="29" selection-end-column="38" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
       <provider editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="19" column="3" lean-forward="true" selection-start-line="19" selection-start-column="3" selection-end-line="19" selection-end-column="3" />
         </state>
       </provider>
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="420">
-            <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
-          </first_editor>
-          <second_editor />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wae_mmd.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="631">
+          <caret line="237" column="16" selection-start-line="237" selection-start-column="16" selection-end-line="237" selection-end-column="16" />
         </state>
       </provider>
     </entry>

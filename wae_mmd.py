@@ -111,31 +111,73 @@ class Decoder(nn.Module):
         x = self.main(x)
         return x
 
-def rbf_kernel(X, Y):
-    batch_size = X.size()[0]
+def imq_kernel(X: torch.Tensor,
+               Y: torch.Tensor,
+               h_dim: int):
+    batch_size = X.size(0)
 
-    Z = torch.cat((X, Y), 0)
-    ZZT = torch.mm(Z, Z.t())
-    diag_ZZT = torch.diag(ZZT).unsqueeze(1)
-    Z_norm_sqr = diag_ZZT.expand_as(ZZT)
-    exponent = Z_norm_sqr - 2 * ZZT + Z_norm_sqr.t()
+    norms_x = X.sum(1).unsqueeze(0)
+    prods_x = torch.mm(norms_x, norms_x.t())
+    dists_x = norms_x + norms_x.t() - 2 * prods_x
 
-    K = torch.exp(-exponent / (2 * args.sigma))
-    return K[:batch_size, :batch_size], K[:batch_size, batch_size:], K[batch_size:, batch_size:]
+    norms_y = Y.sum(1).unsqueeze(0)
+    prods_y = torch.mm(norms_y, norms_y.t())
+    dists_y = norms_y + norms_y.t() - 2 * prods_y
 
-def lorentz_kernel(X, Y):
-    batch_size = X.size()[0]
+    dot_prd = torch.mm(norms_x, norms_y.t())
+    dists_c = norms_x + norms_y.t() - 2 * dot_prd
 
-    Z = torch.cat((X, Y), 0)
-    ZZT = torch.mm(Z, Z.t())
-    diag_ZZT = torch.diag(ZZT).unsqueeze(1)
-    Z_norm_sqr = diag_ZZT.expand_as(ZZT)
-    exponent = Z_norm_sqr - 2 * ZZT + Z_norm_sqr.t()
+    stats = 0
+    for scale in [.1, .2, .5, 1., 2., 5., 10.]:
+        C = 2 * h_dim * 1.0 * scale
+        res1 = C / (C + dists_x)
+        res1 += C / (C + dists_y)
 
-    C = 2 * args.n_z * (args.sigma ** 2)
-    K = C / (C + exponent ** 2)
+        if torch.cuda.is_available():
+            res1 = (1 - torch.eye(batch_size).cuda()) * res1
+        else:
+            res1 = (1 - torch.eye(batch_size)) * res1
 
-    return K[:batch_size, :batch_size], K[:batch_size, batch_size:], K[batch_size:, batch_size:]
+        res1 = res1.sum() / (batch_size - 1)
+        res2 = C / (C + dists_c)
+        res2 = res2.sum() * 2. / (batch_size)
+        stats += res1 - res2
+
+    return stats
+
+def rbf_kernel(X: torch.Tensor,
+               Y: torch.Tensor,
+               h_dim: int):
+    batch_size = X.size(0)
+
+    norms_x = X.sum(1).unsqueeze(0)
+    prods_x = torch.mm(norms_x, norms_x.t())
+    dists_x = norms_x + norms_x.t() - 2 * prods_x
+
+    norms_y = Y.sum(1).unsqueeze(0)
+    prods_y = torch.mm(norms_y, norms_y.t())
+    dists_y = norms_y + norms_y.t() - 2 * prods_y
+
+    dot_prd = torch.mm(norms_x, norms_y.t())
+    dists_c = norms_x + norms_y.t() - 2 * dot_prd
+
+    stats = 0
+    for scale in [.1, .2, .5, 1., 2., 5., 10.]:
+        C = 2 * h_dim * 1.0 / scale
+        res1 = torch.exp(-C * dists_x)
+        res1 += torch.exp(-C * dists_y)
+
+        if torch.cuda.is_available():
+            res1 = (1 - torch.eye(batch_size).cuda()) * res1
+        else:
+            res1 = (1 - torch.eye(batch_size)) * res1
+
+        res1 = res1.sum() / (batch_size - 1)
+        res2 = torch.exp(-C * dists_c)
+        res2 = res2.sum() * 2. / batch_size
+        stats += res1 - res2
+
+    return stats
 
 encoder, decoder = Encoder(args), Decoder(args)
 criterion = nn.MSELoss()
@@ -192,8 +234,8 @@ for epoch in range(args.epochs):
 
         z_real = encoder(images)
 
-        mmd_real, mmd_cross, mmd_fake = lorentz_kernel(z_real, z_fake)
-        (mmd_fake + mmd_real + mmd_cross).mean().backward(one)
+        mmd_loss = imq_kernel(z_real, z_fake, h_dim=encoder.n_z)
+        mmd_loss.mean().backward(one)
 
         enc_optim.step()
         dec_optim.step()

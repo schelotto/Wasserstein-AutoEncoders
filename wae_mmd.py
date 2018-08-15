@@ -16,7 +16,8 @@ from torch.optim.lr_scheduler import StepLR
 torch.manual_seed(123)
 
 parser = argparse.ArgumentParser(description='PyTorch MNIST WAE-MMD')
-parser.add_argument('-batch_size', type=int, default=100, metavar='N', help='input batch size for training (default: 100)')
+parser.add_argument('-batch_size', type=int, default=100, metavar='N',
+                    help='input batch size for training (default: 100)')
 parser.add_argument('-epochs', type=int, default=100, help='number of epochs to train (default: 100)')
 parser.add_argument('-lr', type=float, default=0.0001, help='learning rate (default: 0.0001)')
 parser.add_argument('-dim_h', type=int, default=128, help='hidden dimension (default: 128)')
@@ -32,9 +33,9 @@ trainset = MNIST(root='./data/',
                  download=True)
 
 testset = MNIST(root='./data/',
-                 train=False,
-                 transform=transforms.ToTensor(),
-                 download=True)
+                train=False,
+                transform=transforms.ToTensor(),
+                download=True)
 
 train_loader = DataLoader(dataset=trainset,
                           batch_size=args.batch_size,
@@ -44,13 +45,16 @@ test_loader = DataLoader(dataset=testset,
                          batch_size=104,
                          shuffle=False)
 
+
 def free_params(module: nn.Module):
     for p in module.parameters():
         p.requires_grad = True
 
+
 def frozen_params(module: nn.Module):
     for p in module.parameters():
         p.requires_grad = False
+
 
 class Encoder(nn.Module):
     def __init__(self, args):
@@ -80,6 +84,7 @@ class Encoder(nn.Module):
         x = x.squeeze()
         x = self.fc(x)
         return x
+
 
 class Decoder(nn.Module):
     def __init__(self, args):
@@ -111,21 +116,24 @@ class Decoder(nn.Module):
         x = self.main(x)
         return x
 
+
 def imq_kernel(X: torch.Tensor,
                Y: torch.Tensor,
                h_dim: int):
     batch_size = X.size(0)
 
+    p2_norm_x = X.pow(2).sum(1).unsqueeze(0)
     norms_x = X.sum(1).unsqueeze(0)
     prods_x = torch.mm(norms_x, norms_x.t())
-    dists_x = norms_x + norms_x.t() - 2 * prods_x
+    dists_x = p2_norm_x + p2_norm_x.t() - 2 * prods_x
 
-    norms_y = Y.sum(1).unsqueeze(0)
+    p2_norm_y = Y.pow(2).sum(1).unsqueeze(0)
+    norms_y = X.sum(1).unsqueeze(0)
     prods_y = torch.mm(norms_y, norms_y.t())
-    dists_y = norms_y + norms_y.t() - 2 * prods_y
+    dists_y = p2_norm_y + p2_norm_y.t() - 2 * prods_y
 
     dot_prd = torch.mm(norms_x, norms_y.t())
-    dists_c = norms_x + norms_y.t() - 2 * dot_prd
+    dists_c = p2_norm_x + p2_norm_y.t() - 2 * dot_prd
 
     stats = 0
     for scale in [.1, .2, .5, 1., 2., 5., 10.]:
@@ -145,21 +153,24 @@ def imq_kernel(X: torch.Tensor,
 
     return stats
 
+
 def rbf_kernel(X: torch.Tensor,
                Y: torch.Tensor,
                h_dim: int):
     batch_size = X.size(0)
 
+    p2_norm_x = X.pow(2).sum(1).unsqueeze(0)
     norms_x = X.sum(1).unsqueeze(0)
     prods_x = torch.mm(norms_x, norms_x.t())
-    dists_x = norms_x + norms_x.t() - 2 * prods_x
+    dists_x = p2_norm_x + p2_norm_x.t() - 2 * prods_x
 
-    norms_y = Y.sum(1).unsqueeze(0)
+    p2_norm_y = Y.pow(2).sum(1).unsqueeze(0)
+    norms_y = X.sum(1).unsqueeze(0)
     prods_y = torch.mm(norms_y, norms_y.t())
-    dists_y = norms_y + norms_y.t() - 2 * prods_y
+    dists_y = p2_norm_y + p2_norm_y.t() - 2 * prods_y
 
     dot_prd = torch.mm(norms_x, norms_y.t())
-    dists_c = norms_x + norms_y.t() - 2 * dot_prd
+    dists_c = p2_norm_x + p2_norm_y.t() - 2 * dot_prd
 
     stats = 0
     for scale in [.1, .2, .5, 1., 2., 5., 10.]:
@@ -179,6 +190,7 @@ def rbf_kernel(X: torch.Tensor,
 
     return stats
 
+
 encoder, decoder = Encoder(args), Decoder(args)
 criterion = nn.MSELoss()
 
@@ -188,10 +200,6 @@ decoder.train()
 if torch.cuda.is_available():
     encoder, decoder = encoder.cuda(), decoder.cuda()
 
-if torch.cuda.device_count() > 1:
-    encoder = nn.DataParallel(encoder, device_ids=range(torch.cuda.device_count()))
-    decoder = nn.DataParallel(decoder, device_ids=range(torch.cuda.device_count()))
-
 one = torch.Tensor([1])
 mone = one * -1
 
@@ -200,8 +208,8 @@ if torch.cuda.is_available():
     mone = mone.cuda()
 
 # Optimizers
-enc_optim = optim.Adam(encoder.parameters(), lr = args.lr)
-dec_optim = optim.Adam(decoder.parameters(), lr = args.lr)
+enc_optim = optim.Adam(encoder.parameters(), lr=args.lr)
+dec_optim = optim.Adam(decoder.parameters(), lr=args.lr)
 
 enc_scheduler = StepLR(enc_optim, step_size=30, gamma=0.5)
 dec_scheduler = StepLR(dec_optim, step_size=30, gamma=0.5)
@@ -224,7 +232,6 @@ for epoch in range(args.epochs):
         x_recon = decoder(z)
 
         recon_loss = criterion(x_recon, images)
-        recon_loss.backward(one)
 
         # ======== MMD Kernel Loss ======== #
 
@@ -235,7 +242,10 @@ for epoch in range(args.epochs):
         z_real = encoder(images)
 
         mmd_loss = imq_kernel(z_real, z_fake, h_dim=encoder.n_z)
-        mmd_loss.mean().backward(one)
+        mmd_loss = mmd_loss.mean()
+
+        total_loss = recon_loss - mmd_loss
+        total_loss.backward()
 
         enc_optim.step()
         dec_optim.step()

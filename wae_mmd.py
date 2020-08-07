@@ -122,18 +122,16 @@ def imq_kernel(X: torch.Tensor,
                h_dim: int):
     batch_size = X.size(0)
 
-    p2_norm_x = X.pow(2).sum(1).unsqueeze(0)
-    norms_x = X.sum(1).unsqueeze(0)
-    prods_x = torch.mm(norms_x, norms_x.t())
-    dists_x = p2_norm_x + p2_norm_x.t() - 2 * prods_x
+    norms_x = X.pow(2).sum(1, keepdim=True)  # batch_size x 1
+    prods_x = torch.mm(X, X.t())  # batch_size x batch_size
+    dists_x = norms_x + norms_x.t() - 2 * prods_x
 
-    p2_norm_y = Y.pow(2).sum(1).unsqueeze(0)
-    norms_y = X.sum(1).unsqueeze(0)
-    prods_y = torch.mm(norms_y, norms_y.t())
-    dists_y = p2_norm_y + p2_norm_y.t() - 2 * prods_y
+    norms_y = Y.pow(2).sum(1, keepdim=True)  # batch_size x 1
+    prods_y = torch.mm(Y, Y.t())  # batch_size x batch_size
+    dists_y = norms_y + norms_y.t() - 2 * prods_y
 
-    dot_prd = torch.mm(norms_x, norms_y.t())
-    dists_c = p2_norm_x + p2_norm_y.t() - 2 * dot_prd
+    dot_prd = torch.mm(X, Y.t())
+    dists_c = norms_x + norms_y.t() - 2 * dot_prd
 
     stats = 0
     for scale in [.1, .2, .5, 1., 2., 5., 10.]:
@@ -159,18 +157,16 @@ def rbf_kernel(X: torch.Tensor,
                h_dim: int):
     batch_size = X.size(0)
 
-    p2_norm_x = X.pow(2).sum(1).unsqueeze(0)
-    norms_x = X.sum(1).unsqueeze(0)
-    prods_x = torch.mm(norms_x, norms_x.t())
-    dists_x = p2_norm_x + p2_norm_x.t() - 2 * prods_x
+    norms_x = X.pow(2).sum(1, keepdim=True)  # batch_size x 1
+    prods_x = torch.mm(X, X.t())  # batch_size x batch_size
+    dists_x = norms_x + norms_x.t() - 2 * prods_x
 
-    p2_norm_y = Y.pow(2).sum(1).unsqueeze(0)
-    norms_y = X.sum(1).unsqueeze(0)
-    prods_y = torch.mm(norms_y, norms_y.t())
-    dists_y = p2_norm_y + p2_norm_y.t() - 2 * prods_y
+    norms_y = Y.pow(2).sum(1, keepdim=True)  # batch_size x 1
+    prods_y = torch.mm(Y, Y.t())  # batch_size x batch_size
+    dists_y = norms_y + norms_y.t() - 2 * prods_y
 
-    dot_prd = torch.mm(norms_x, norms_y.t())
-    dists_c = p2_norm_x + p2_norm_y.t() - 2 * dot_prd
+    dot_prd = torch.mm(X, Y.t())
+    dists_c = norms_x + norms_y.t() - 2 * dot_prd
 
     stats = 0
     for scale in [.1, .2, .5, 1., 2., 5., 10.]:
@@ -242,9 +238,9 @@ for epoch in range(args.epochs):
         z_real = encoder(images)
 
         mmd_loss = imq_kernel(z_real, z_fake, h_dim=encoder.n_z)
-        mmd_loss = mmd_loss.mean()
+        mmd_loss = mmd_loss / batch_size
 
-        total_loss = recon_loss - mmd_loss
+        total_loss = recon_loss + mmd_loss
         total_loss.backward()
 
         enc_optim.step()
@@ -253,8 +249,9 @@ for epoch in range(args.epochs):
         step += 1
 
         if (step + 1) % 300 == 0:
-            print("Epoch: [%d/%d], Step: [%d/%d], Reconstruction Loss: %.4f" %
-                  (epoch + 1, args.epochs, step + 1, len(train_loader), recon_loss.data.item()))
+            print("Epoch: [%d/%d], Step: [%d/%d], Reconstruction Loss: %.4f, MMD Loss %.4f" %
+                  (epoch + 1, args.epochs, step + 1, len(train_loader), recon_loss.data.item(),
+                   mmd_loss.item()))
 
     if (epoch + 1) % 1 == 0:
         batch_size = 104
@@ -262,10 +259,13 @@ for epoch in range(args.epochs):
         test_data = next(test_iter)
 
         z_real = encoder(Variable(test_data[0]).cuda())
-        reconst = decoder(torch.randn_like(z_real)).cpu().view(batch_size, 1, 28, 28)
+        reconst = decoder(z_real).cpu().view(batch_size, 1, 28, 28)
+        sample = decoder(torch.randn_like(z_real)).cpu().view(batch_size, 1, 28, 28)
 
         if not os.path.isdir('./data/reconst_images'):
             os.makedirs('data/reconst_images')
 
         save_image(test_data[0].view(-1, 1, 28, 28), './data/reconst_images/wae_mmd_input.png')
         save_image(reconst.data, './data/reconst_images/wae_mmd_images_%d.png' % (epoch + 1))
+        save_image(sample.data, './data/reconst_images/wae_mmd_samples_%d.png' % (epoch + 1))
+
